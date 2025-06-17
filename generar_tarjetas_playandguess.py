@@ -1,3 +1,4 @@
+
 from pathlib import Path
 import pandas as pd
 import qrcode
@@ -7,29 +8,96 @@ from fpdf import FPDF
 def crear_index_html(path, youtube_id):
     html = f"""
 <!DOCTYPE html>
-<html lang='es'>
+<html lang="es">
 <head>
-    <meta charset='UTF-8'>
-    <title>Reproductor oculto</title>
-    <style>
-        body {{ margin: 0; background-color: black; }}
-        #player {{ display: none; }}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Play and Guess</title>
+  <style>
+    body {{
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }}
+
+    #video-container {{
+      position: relative;
+      width: 90vw;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    }}
+
+    iframe {{
+      width: 100%;
+      height: 100%;
+      border: none;
+      visibility: hidden;
+    }}
+
+    #overlay {{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      z-index: 2;
+      pointer-events: all;
+      cursor: pointer;
+    }}
+
+    h1 {{
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }}
+
+    .msg {{
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #aaa;
+    }}
+  </style>
 </head>
 <body>
-    <iframe id="player" width="560" height="315"
-        src="https://www.youtube.com/embed/{youtube_id}?autoplay=1&controls=0&showinfo=0&modestbranding=1"
-        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  <h1>🎧 Play and Guess</h1>
+  <div id="video-container">
+    <div id="overlay">Haz clic para reproducir</div>
+    <iframe
+      id="player"
+      src=""
+      allow="autoplay"
+      allowfullscreen>
     </iframe>
-    <script>
-        const player = document.getElementById("player");
-        window.onload = () => {{
-            player.style.display = "none";
-            setTimeout(() => {{
-                player.style.display = "block";
-            }}, 100);
-        }};
-    </script>
+  </div>
+  <div class="msg">Escucha la canción. ¿Puedes adivinar el año?</div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const iframe = document.getElementById("player");
+
+    overlay.addEventListener("click", function () {{
+      iframe.src =
+        "https://www.youtube-nocookie.com/embed/{youtube_id}?autoplay=1&controls=0&rel=0&modestbranding=1";
+      overlay.innerText = "Reproduciendo...";
+      overlay.style.cursor = "default";
+      overlay.style.pointerEvents = "none";
+    }});
+  </script>
 </body>
 </html>
 """
@@ -120,7 +188,6 @@ def procesar_excel(nombre_excel, nombre_lista, dominio_base):
             id_cancion=id_cancion
         )
 
-    # Crear índice general
     index_html = output_root / "index.html"
     with open(index_html, "w", encoding="utf-8") as idx:
         idx.write("<!DOCTYPE html>\n<html lang='es'>\n<head>\n")
@@ -138,7 +205,6 @@ def procesar_excel(nombre_excel, nombre_lista, dominio_base):
 
     return output_root
 
-# === Script principal ===
 if __name__ == "__main__":
     print("🎵 Generador de tarjetas para Play & Guess 🎵\n")
     nombre_excel = input("📄 Nombre del archivo Excel (.xlsx): ").strip()

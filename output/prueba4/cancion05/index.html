@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Play and Guess</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #video-container {
+      position: relative;
+      width: 90vw;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      visibility: hidden;
+    }
+
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      z-index: 2;
+      pointer-events: all;
+      cursor: pointer;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    .msg {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎧 Play and Guess</h1>
+  <div id="video-container">
+    <div id="overlay">Haz clic para reproducir</div>
+    <iframe
+      id="player"
+      src=""
+      allow="autoplay"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <div class="msg">Escucha la canción. ¿Puedes adivinar el año?</div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const iframe = document.getElementById("player");
+
+    overlay.addEventListener("click", function () {
+      iframe.src =
+        "https://www.youtube-nocookie.com/embed/JGwWNGJdvx8?autoplay=1&controls=0&rel=0&modestbranding=1";
+      overlay.innerText = "Reproduciendo...";
+      overlay.style.cursor = "default";
+      overlay.style.pointerEvents = "none";
+    });
+  </script>
+</body>
+</html>
