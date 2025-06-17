@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Reproductor oculto</title>
+    <style>
+        body { margin: 0; background-color: black; }
+        #player { display: none; }
+    </style>
+</head>
+<body>
+    <iframe id="player" width="560" height="315"
+        src="https://www.youtube.com/embed/JGwWNGJdvx8?autoplay=1&controls=0&showinfo=0&modestbranding=1"
+        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+    <script>
+        const player = document.getElementById("player");
+        window.onload = () => {
+            player.style.display = "none";
+            setTimeout(() => {
+                player.style.display = "block";
+            }, 100);
+        };
+    </script>
+</body>
+</html>
